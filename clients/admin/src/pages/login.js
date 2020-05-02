@@ -15,9 +15,10 @@ const LoginPage = () => {
     event.preventDefault();
     const email = event.target.elements.email.value;
     const password = event.target.elements.password.value;
+    const apiUrl = process.env.API_URL;
 
-    fetch('http://localhost:3000/sign_in', { credentials: 'include' }).then(() => {
-      fetch('http://localhost:3000/session', {
+    fetch(`${apiUrl}/sign_in`, { credentials: 'include' }).then(() => {
+      fetch(`${apiUrl}/session`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -1,7 +1,4 @@
 const ghpages = require('gh-pages');
-
-require('dotenv').config({
-  path: `.env`,
-})
+require('./gatsby-config');
 
 ghpages.publish('public', {repo: process.env.GH_PAGES_REPO});
