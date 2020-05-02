@@ -53,6 +53,7 @@ typings/
 
 # dotenv environment variable files
 .env*
+!.env.example
 
 # gatsby files
 .cache/
@@ -67,3 +68,7 @@ yarn-error.log
 .pnp.js
 # Yarn Integrity file
 .yarn-integrity
+
+# Custom domain name when deploying to GitHub pages
+# https://help.github.com/en/github/working-with-github-pages/managing-a-custom-domain-for-your-github-pages-site
+static/CNAME
