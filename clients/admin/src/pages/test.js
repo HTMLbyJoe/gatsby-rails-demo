@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from "gatsby"
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery } from '@apollo/client';
 import gql from 'graphql-tag';
 import Layout from "../components/layout"
 import SEO from "../components/seo"
