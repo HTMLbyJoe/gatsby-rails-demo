@@ -1,33 +1,30 @@
 import React from 'react';
 import { Link } from "gatsby"
+import { useMutation } from '@apollo/client';
+import gql from 'graphql-tag';
 import Layout from "../components/layout"
 import SEO from "../components/seo"
 
-const getCookie = (name) => {
-  // https://stackoverflow.com/a/15724300
-  var value = "; " + document.cookie;
-  var parts = value.split("; " + name + "=");
-  if (parts.length === 2) return parts.pop().split(";").shift();
-};
+const LOGIN_MUTATION = gql`
+  mutation LoginMutation($email: String!, $password: String!) {
+    login(input: {email: $email, password: $password}) {
+      errors
+      clientMutationId
+      success
+    }
+  }
+`;
 
 const LoginPage = () => {
+  const [login, { data }] = useMutation(LOGIN_MUTATION);
+  console.log(data);
+
   const onSubmit = (event) => {
     event.preventDefault();
     const email = event.target.elements.email.value;
     const password = event.target.elements.password.value;
-    const apiUrl = process.env.API_URL;
 
-    fetch(`${apiUrl}/sign_in`, { credentials: 'include' }).then(() => {
-      fetch(`${apiUrl}/session`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-CSRF-Token': decodeURIComponent(getCookie('CSRF-TOKEN')),
-        },
-        credentials: 'include',
-        body: JSON.stringify({email, password}),
-      });
-    });
+    login({ variables: { email, password } });
   };
 
   return (
