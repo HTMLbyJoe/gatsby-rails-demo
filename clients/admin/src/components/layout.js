@@ -8,12 +8,14 @@
 import React from "react"
 import PropTypes from "prop-types"
 import { useStaticQuery, graphql } from "gatsby"
+import gql from 'graphql-tag';
+import { useQuery } from '@apollo/client';
 
 import Header from "./header"
 import "./layout.css"
 
 const Layout = ({ children }) => {
-  const data = useStaticQuery(graphql`
+  const staticData = useStaticQuery(graphql`
     query SiteTitleQuery {
       site {
         siteMetadata {
@@ -23,9 +25,17 @@ const Layout = ({ children }) => {
     }
   `)
 
+  const CURRENT_USER_QUERY = gql`
+    {
+     me
+    }
+  `;
+
+  const { data } = useQuery(CURRENT_USER_QUERY);
+
   return (
     <>
-      <Header siteTitle={data.site.siteMetadata.title} />
+      <Header siteTitle={staticData.site.siteMetadata.title} />
       <div
         style={{
           margin: `0 auto`,
@@ -33,6 +43,7 @@ const Layout = ({ children }) => {
           padding: `0 1.0875rem 1.45rem`,
         }}
       >
+        {data && data.me && <div>Signed in as <b>{data.me}</b></div>}
         <main>{children}</main>
         <footer>
           © {new Date().getFullYear()}, Built with

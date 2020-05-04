@@ -9,5 +9,11 @@ module Types
     def test_field
       "Hello World!"
     end
+
+    field :me, String, null: true,
+      description: "The email address of the currently signed-in user"
+    def me
+      context[:current_user].try(:email)
+    end
   end
 end
