@@ -8,9 +8,8 @@ class Mutations::Login < Mutations::BaseMutation
   field :errors, [String], null: false
 
   def resolve(email:, password:)
-    session = Clearance::Session.new({})
     user = User.authenticate(email, password)
-    session.sign_in(user) do |status|
+    context[:request].env[:clearance].sign_in(user) do |status|
       {
         success: status.success?,
         errors: []

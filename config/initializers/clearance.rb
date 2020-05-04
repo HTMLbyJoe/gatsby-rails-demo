@@ -4,5 +4,5 @@ Clearance.configure do |config|
   config.mailer_sender = 'reply@example.com'
   config.redirect_url = '/'
   config.rotate_csrf_on_sign_in = true
-  config.secure_cookie = true
+  config.secure_cookie = Rails.env.production?
 end
