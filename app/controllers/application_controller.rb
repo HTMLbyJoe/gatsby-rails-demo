@@ -7,6 +7,9 @@ class ApplicationController < ActionController::API
   protect_from_forgery with: :exception
   after_action :set_csrf_cookie
 
+  def no_op
+  end
+
   private
 
   def set_csrf_cookie
