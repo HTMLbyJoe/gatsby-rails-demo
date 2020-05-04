@@ -9,7 +9,7 @@ import React from "react"
 import PropTypes from "prop-types"
 import { useStaticQuery, graphql } from "gatsby"
 import gql from 'graphql-tag';
-import { useQuery } from '@apollo/client';
+import { useQuery, useMutation } from '@apollo/client';
 
 import Header from "./header"
 import "./layout.css"
@@ -33,6 +33,14 @@ const Layout = ({ children }) => {
 
   const { data } = useQuery(CURRENT_USER_QUERY);
 
+  const [logout] = useMutation(gql`
+    mutation LogoutMutation {
+      logout(input: {}) {
+        success
+      }
+    }
+  `);
+
   return (
     <>
       <Header siteTitle={staticData.site.siteMetadata.title} />
@@ -43,7 +51,7 @@ const Layout = ({ children }) => {
           padding: `0 1.0875rem 1.45rem`,
         }}
       >
-        {data && data.me && <div>Signed in as <b>{data.me}</b></div>}
+        {data && data.me && <div>Signed in as <b>{data.me}</b> <button onClick={logout}>Log out</button></div>}
         <main>{children}</main>
         <footer>
           © {new Date().getFullYear()}, Built with
