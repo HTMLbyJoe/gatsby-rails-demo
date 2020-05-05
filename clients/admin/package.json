@@ -39,7 +39,7 @@
     "clean": "gatsby clean",
     "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\" && exit 1",
     "predeploy": "yarn build",
-    "deploy": "node ./deploy.js"
+    "deploy": "GIT_SSH_COMMAND='ssh -o StrictHostKeyChecking=accept-new' node ./deploy.js"
   },
   "repository": {
     "type": "git",
