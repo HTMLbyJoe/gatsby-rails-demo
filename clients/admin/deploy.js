@@ -21,4 +21,10 @@ if (
   fs.writeFileSync(privateKeyFile, privateKey);
 }
 
-ghpages.publish('public', {repo: process.env.GH_PAGES_REPO}, (err) => console.error(err));
+ghpages.publish('public', {
+  repo: process.env.GH_PAGES_REPO,
+  user: {
+    name: 'The Deploy Script',
+    email: 'deploy@example.com'
+  }
+}, (err) => console.error(err));
