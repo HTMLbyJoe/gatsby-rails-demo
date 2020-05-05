@@ -1,0 +1,7 @@
+{
+  "name": "gatsby-rails-demo",
+  "version": "0.0.1",
+  "scripts": {
+    "postinstall": "yarn install --cwd clients/admin"
+  }
+}

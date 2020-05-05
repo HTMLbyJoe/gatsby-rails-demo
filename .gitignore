@@ -23,3 +23,6 @@
 
 # Ignore environment variables file
 .env
+
+# Ignore frontend dependency directories
+node_modules/
