@@ -7,9 +7,10 @@ import SEO from "../components/seo"
 
 const LOGIN_MUTATION = gql`
   mutation LoginMutation($email: String!, $password: String!) {
-    login(email: $email, password: $password) {
-      errors
+    login(email: $email, password: $password) @connection(key: "login", filter: ["email"]) {
       success
+      email
+      errors
     }
   }
 `;

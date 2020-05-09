@@ -5,6 +5,7 @@ class Mutations::Login < Mutations::BaseMutation
   argument :password, String, required: true
 
   field :success, Boolean, null: false
+  field :email, String, null: true
   field :errors, [String], null: false
 
   def resolve(email:, password:)
@@ -12,6 +13,7 @@ class Mutations::Login < Mutations::BaseMutation
     context[:request].env[:clearance].sign_in(user) do |status|
       {
         success: status.success?,
+        email: user.email,
         errors: []
       }
     end
