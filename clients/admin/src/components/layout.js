@@ -35,7 +35,7 @@ const Layout = ({ children }) => {
 
   const [logout] = useMutation(gql`
     mutation LogoutMutation {
-      logout(input: {}) {
+      logout {
         success
       }
     }
