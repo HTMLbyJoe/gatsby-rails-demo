@@ -36,6 +36,6 @@ module GatsbyRailsDemo
 
     config.middleware.use ActionDispatch::Cookies
     config.middleware.use ActionDispatch::Flash
-    config.middleware.use ActionDispatch::Session::CookieStore, domain: ENV['COOKIE_DOMAIN']
+    config.middleware.use ActionDispatch::Session::CookieStore, domain: ENV['COOKIE_DOMAIN'], same_site: :strict
   end
 end

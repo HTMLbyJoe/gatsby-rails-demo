@@ -13,6 +13,10 @@ class ApplicationController < ActionController::API
   private
 
   def set_csrf_cookie
-    cookies['CSRF-TOKEN'] = { value: form_authenticity_token, domain: ENV['COOKIE_DOMAIN'] }
+    cookies['CSRF-TOKEN'] = {
+      value: form_authenticity_token,
+      domain: ENV['COOKIE_DOMAIN'],
+      same_site: :strict,
+    }
   end
 end
