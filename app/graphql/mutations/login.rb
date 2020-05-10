@@ -10,6 +10,8 @@ class Mutations::Login < Mutations::BaseMutation
 
   def resolve(email:, password:)
     user = User.authenticate(email, password)
+    return { success: false, errors: ['Invalid email address or password'] } unless user
+
     context[:request].env[:clearance].sign_in(user) do |status|
       {
         success: status.success?,
