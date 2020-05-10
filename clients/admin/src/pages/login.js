@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link, navigate } from "gatsby"
 import { useMutation } from '@apollo/client';
 import gql from 'graphql-tag';
+import AppContext from '../AppContext';
 import Layout from "../components/layout"
 import SEO from "../components/seo"
 
@@ -16,6 +17,7 @@ const LOGIN_MUTATION = gql`
 `;
 
 const LoginPage = () => {
+  const { setCurentUserEmail } = useContext(AppContext);
   const [login, { data: {login: loginData} = {}, loading }] = useMutation(LOGIN_MUTATION);
 
   const onSubmit = (event) => {
@@ -27,6 +29,7 @@ const LoginPage = () => {
   };
 
   if (loginData?.success) {
+    setCurentUserEmail(loginData?.email);
     navigate('/');
     return null;
   }

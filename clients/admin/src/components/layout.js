@@ -5,16 +5,19 @@
  * See: https://www.gatsbyjs.org/docs/use-static-query/
  */
 
-import React from "react"
+import React, { useContext } from "react"
 import PropTypes from "prop-types"
 import { useStaticQuery, graphql } from "gatsby"
 import gql from 'graphql-tag';
 import { useQuery, useMutation } from '@apollo/client';
 
+import AppContext from "../AppContext"
 import Header from "./header"
 import "./layout.css"
 
 const Layout = ({ children }) => {
+  const { curentUserEmail, setCurentUserEmail } = useContext(AppContext);
+
   const staticData = useStaticQuery(graphql`
     query SiteTitleQuery {
       site {
@@ -31,15 +34,19 @@ const Layout = ({ children }) => {
     }
   `;
 
-  const { data } = useQuery(CURRENT_USER_QUERY);
+  useQuery(CURRENT_USER_QUERY, { onCompleted: ({me}) => {
+    me && setCurentUserEmail(me);
+  } });
 
-  const [logout] = useMutation(gql`
+  const [logout, { data: {logout: logoutData} = {}, loading }] = useMutation(gql`
     mutation LogoutMutation {
       logout {
         success
       }
     }
   `);
+
+  logoutData?.success && setCurentUserEmail();
 
   return (
     <>
@@ -51,7 +58,7 @@ const Layout = ({ children }) => {
           padding: `0 1.0875rem 1.45rem`,
         }}
       >
-        {data && data.me && <div>Signed in as <b>{data.me}</b> <button onClick={logout}>Log out</button></div>}
+        {curentUserEmail && <div>Signed in as <b>{curentUserEmail}</b> <button onClick={logout}>Log out</button></div>}
         <main>{children}</main>
         <footer>
           © {new Date().getFullYear()}, Built with
