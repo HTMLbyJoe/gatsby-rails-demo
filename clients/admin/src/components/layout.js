@@ -44,9 +44,7 @@ const Layout = ({ children }) => {
         success
       }
     }
-  `);
-
-  logoutData?.success && setCurentUserEmail();
+  `, { onCompleted: ({logout: { success }}) => { success && setCurentUserEmail() } });
 
   return (
     <>

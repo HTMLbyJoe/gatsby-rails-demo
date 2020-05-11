@@ -18,7 +18,12 @@ const LOGIN_MUTATION = gql`
 
 const LoginPage = () => {
   const { setCurentUserEmail } = useContext(AppContext);
-  const [login, { data: {login: loginData} = {}, loading }] = useMutation(LOGIN_MUTATION);
+  const [login, { data: {login: loginData} = {}, loading }] = useMutation(LOGIN_MUTATION, { onCompleted: ({login: { success, email }}) => {
+    if (success) {
+      setCurentUserEmail(email);
+      navigate('/');
+    }
+  }});
 
   const onSubmit = (event) => {
     event.preventDefault();
@@ -27,12 +32,6 @@ const LoginPage = () => {
 
     login({ variables: { email, password } });
   };
-
-  if (loginData?.success) {
-    setCurentUserEmail(loginData?.email);
-    navigate('/');
-    return null;
-  }
 
   return (
   <Layout>
