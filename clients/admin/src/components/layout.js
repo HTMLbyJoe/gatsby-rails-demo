@@ -8,15 +8,15 @@
 import React, { useContext } from "react"
 import PropTypes from "prop-types"
 import { useStaticQuery, graphql } from "gatsby"
-import gql from 'graphql-tag';
-import { useQuery, useMutation } from '@apollo/client';
+import gql from "graphql-tag"
+import { useQuery, useMutation } from "@apollo/client"
 
 import AppContext from "../AppContext"
 import Header from "./header"
 import "./layout.css"
 
 const Layout = ({ children }) => {
-  const { curentUserEmail, setCurentUserEmail } = useContext(AppContext);
+  const { curentUserEmail, setCurentUserEmail } = useContext(AppContext)
 
   const staticData = useStaticQuery(graphql`
     query SiteTitleQuery {
@@ -30,21 +30,30 @@ const Layout = ({ children }) => {
 
   const CURRENT_USER_QUERY = gql`
     {
-     me
+      me
     }
-  `;
+  `
 
-  useQuery(CURRENT_USER_QUERY, { onCompleted: ({me}) => {
-    me && setCurentUserEmail(me);
-  } });
+  useQuery(CURRENT_USER_QUERY, {
+    onCompleted: ({ me }) => {
+      me && setCurentUserEmail(me)
+    },
+  })
 
-  const [logout, { data: {logout: logoutData} = {}, loading }] = useMutation(gql`
-    mutation LogoutMutation {
-      logout {
-        success
+  const [logout, { data: { logout: logoutData } = {}, loading }] = useMutation(
+    gql`
+      mutation LogoutMutation {
+        logout {
+          success
+        }
       }
+    `,
+    {
+      onCompleted: ({ logout: { success } }) => {
+        success && setCurentUserEmail()
+      },
     }
-  `, { onCompleted: ({logout: { success }}) => { success && setCurentUserEmail() } });
+  )
 
   return (
     <>
@@ -56,7 +65,12 @@ const Layout = ({ children }) => {
           padding: `0 1.0875rem 1.45rem`,
         }}
       >
-        {curentUserEmail && <div>Signed in as <b>{curentUserEmail}</b> <button onClick={logout}>Log out</button></div>}
+        {curentUserEmail && (
+          <div>
+            Signed in as <b>{curentUserEmail}</b>{" "}
+            <button onClick={logout}>Log out</button>
+          </div>
+        )}
         <main>{children}</main>
         <footer>
           © {new Date().getFullYear()}, Built with
