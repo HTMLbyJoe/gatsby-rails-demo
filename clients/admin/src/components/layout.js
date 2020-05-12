@@ -40,7 +40,7 @@ const Layout = ({ children }) => {
     },
   })
 
-  const [logout, { data: { logout: logoutData } = {}, loading }] = useMutation(
+  const [logout, { loading }] = useMutation(
     gql`
       mutation LogoutMutation {
         logout {
@@ -68,7 +68,9 @@ const Layout = ({ children }) => {
         {curentUserEmail && (
           <div>
             Signed in as <b>{curentUserEmail}</b>{" "}
-            <button onClick={logout}>Log out</button>
+            <button onClick={logout} disabled={loading}>
+              Log out
+            </button>
           </div>
         )}
         <main>{children}</main>
