@@ -7,6 +7,7 @@
   "dependencies": {
     "@apollo/client": "^3.0.0-beta.44",
     "apollo-link-context": "^1.0.20",
+    "formik": "^2.1.4",
     "gatsby": "^2.19.7",
     "gatsby-image": "^2.2.39",
     "gatsby-plugin-manifest": "^2.2.39",
