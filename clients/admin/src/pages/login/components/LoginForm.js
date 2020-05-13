@@ -1,10 +1,8 @@
 import React, { useContext } from "react"
-import { Link, navigate } from "gatsby"
-import { useMutation } from "@apollo/client"
+import { navigate } from "gatsby"
 import gql from "graphql-tag"
-import AppContext from "../AppContext"
-import Layout from "../components/layout"
-import SEO from "../components/seo"
+import { useMutation } from "@apollo/client"
+import AppContext from "../../../AppContext"
 
 const LOGIN_MUTATION = gql`
   mutation LoginMutation($email: String!, $password: String!) {
@@ -17,7 +15,7 @@ const LOGIN_MUTATION = gql`
   }
 `
 
-const LoginPage = () => {
+const LoginForm = () => {
   const { setCurentUserEmail } = useContext(AppContext)
   const [login, { data: { login: loginData } = {}, loading }] = useMutation(
     LOGIN_MUTATION,
@@ -40,28 +38,22 @@ const LoginPage = () => {
   }
 
   return (
-    <Layout>
-      <SEO title="Login Page" />
-
+    <form onSubmit={onSubmit}>
       {loginData?.errors.map((error, index) => (
         <div key={index}>{error}</div>
       ))}
-
-      <form onSubmit={onSubmit}>
-        <input placeholder="Email" name="email" disabled={loading} />
-        <input
-          placeholder="Password"
-          type="password"
-          name="password"
-          disabled={loading}
-        />
-        <button type="submit" disabled={loading}>
-          Go
-        </button>
-      </form>
-      <Link to="/">Go back to the homepage</Link>
-    </Layout>
+      <input placeholder="Email" name="email" disabled={loading} />
+      <input
+        placeholder="Password"
+        type="password"
+        name="password"
+        disabled={loading}
+      />
+      <button type="submit" disabled={loading}>
+        Go
+      </button>
+    </form>
   )
 }
 
-export default LoginPage
+export default LoginForm
