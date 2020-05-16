@@ -8,7 +8,7 @@
 import React, { useContext } from "react"
 import PropTypes from "prop-types"
 import { Location } from "@reach/router"
-import { Link, useStaticQuery, graphql } from "gatsby"
+import { Link, withPrefix, useStaticQuery, graphql } from "gatsby"
 import gql from "graphql-tag"
 import { useQuery, useMutation } from "@apollo/client"
 import AppContext from "../AppContext"
@@ -74,7 +74,7 @@ const Layout = ({ location, children }) => {
               </button>
             </>
           )}
-          {!currentUserEmail && location.pathname !== "/login/" && (
+          {!currentUserEmail && location.pathname !== withPrefix("/login/") && (
             <Link to="/login/">Log in</Link>
           )}
         </div>
