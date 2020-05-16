@@ -7,15 +7,15 @@
 
 import React, { useContext } from "react"
 import PropTypes from "prop-types"
-import { useStaticQuery, graphql } from "gatsby"
+import { Location } from "@reach/router"
+import { Link, useStaticQuery, graphql } from "gatsby"
 import gql from "graphql-tag"
 import { useQuery, useMutation } from "@apollo/client"
-
 import AppContext from "../AppContext"
 import Header from "./header"
 import "./layout.css"
 
-const Layout = ({ children }) => {
+const Layout = ({ location, children }) => {
   const { currentUserEmail, setCurrentUserEmail } = useContext(AppContext)
 
   const staticData = useStaticQuery(graphql`
@@ -65,14 +65,19 @@ const Layout = ({ children }) => {
           padding: `0 1.0875rem 1.45rem`,
         }}
       >
-        {currentUserEmail && (
-          <div>
-            Signed in as <b>{currentUserEmail}</b>{" "}
-            <button onClick={logout} disabled={loading}>
-              Log out
-            </button>
-          </div>
-        )}
+        <div>
+          {currentUserEmail && (
+            <>
+              Signed in as <b>{currentUserEmail}</b>{" "}
+              <button onClick={logout} disabled={loading}>
+                Log out
+              </button>
+            </>
+          )}
+          {!currentUserEmail && location.pathname !== "/login/" && (
+            <Link to="/login/">Log in</Link>
+          )}
+        </div>
         <main>{children}</main>
       </div>
     </>
@@ -83,4 +88,8 @@ Layout.propTypes = {
   children: PropTypes.node.isRequired,
 }
 
-export default Layout
+export default props => (
+  <Location>
+    {locationProps => <Layout {...locationProps} {...props} />}
+  </Location>
+)
