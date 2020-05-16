@@ -40,7 +40,7 @@ const Layout = ({ location, children }) => {
     },
   })
 
-  const [logout, { loading }] = useMutation(
+  const [logout, { loading, client }] = useMutation(
     gql`
       mutation LogoutMutation {
         logout {
@@ -50,7 +50,10 @@ const Layout = ({ location, children }) => {
     `,
     {
       onCompleted: ({ logout: { success } }) => {
-        success && setCurrentUserEmail()
+        if (success) {
+          setCurrentUserEmail()
+          client.resetStore()
+        }
       },
     }
   )
