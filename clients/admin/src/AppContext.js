@@ -3,10 +3,10 @@ import React, { createContext, useState } from "react"
 const AppContext = createContext()
 
 export const AppProvider = ({ children }) => {
-  const [curentUserEmail, setCurentUserEmail] = useState()
+  const [currentUserEmail, setCurrentUserEmail] = useState()
 
   return (
-    <AppContext.Provider value={{ curentUserEmail, setCurentUserEmail }}>
+    <AppContext.Provider value={{ currentUserEmail, setCurrentUserEmail }}>
       {children}
     </AppContext.Provider>
   )

@@ -16,7 +16,7 @@ import Header from "./header"
 import "./layout.css"
 
 const Layout = ({ children }) => {
-  const { curentUserEmail, setCurentUserEmail } = useContext(AppContext)
+  const { currentUserEmail, setCurrentUserEmail } = useContext(AppContext)
 
   const staticData = useStaticQuery(graphql`
     query SiteTitleQuery {
@@ -36,7 +36,7 @@ const Layout = ({ children }) => {
 
   useQuery(CURRENT_USER_QUERY, {
     onCompleted: ({ me }) => {
-      me && setCurentUserEmail(me)
+      me && setCurrentUserEmail(me)
     },
   })
 
@@ -50,7 +50,7 @@ const Layout = ({ children }) => {
     `,
     {
       onCompleted: ({ logout: { success } }) => {
-        success && setCurentUserEmail()
+        success && setCurrentUserEmail()
       },
     }
   )
@@ -65,9 +65,9 @@ const Layout = ({ children }) => {
           padding: `0 1.0875rem 1.45rem`,
         }}
       >
-        {curentUserEmail && (
+        {currentUserEmail && (
           <div>
-            Signed in as <b>{curentUserEmail}</b>{" "}
+            Signed in as <b>{currentUserEmail}</b>{" "}
             <button onClick={logout} disabled={loading}>
               Log out
             </button>

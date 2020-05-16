@@ -16,13 +16,13 @@ const LOGIN_MUTATION = gql`
 `
 
 const LoginForm = () => {
-  const { setCurentUserEmail } = useContext(AppContext)
+  const { setCurrentUserEmail } = useContext(AppContext)
   const [login, { data: { login: loginData } = {}, loading }] = useMutation(
     LOGIN_MUTATION,
     {
       onCompleted: ({ login: { success, email } }) => {
         if (success) {
-          setCurentUserEmail(email)
+          setCurrentUserEmail(email)
           navigate("/")
         }
       },
