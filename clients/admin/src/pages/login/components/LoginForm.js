@@ -2,7 +2,9 @@ import React, { useContext } from "react"
 import { navigate } from "gatsby"
 import gql from "graphql-tag"
 import { useMutation } from "@apollo/client"
+import { Formik, Form } from "formik"
 import AppContext from "../../../AppContext"
+import TextInput from "../../../components/inputs/TextInput"
 
 const LOGIN_MUTATION = gql`
   mutation LoginMutation($email: String!, $password: String!) {
@@ -16,43 +18,64 @@ const LOGIN_MUTATION = gql`
 `
 
 const LoginForm = () => {
-  const { setCurrentUserEmail } = useContext(AppContext)
-  const [login, { data: { login: loginData } = {}, loading }] = useMutation(
-    LOGIN_MUTATION,
-    {
-      onCompleted: ({ login: { success, email } }) => {
-        if (success) {
-          setCurrentUserEmail(email)
-          navigate("/")
-        }
-      },
-    }
-  )
+  const { currentUserEmail, setCurrentUserEmail } = useContext(AppContext)
+  const [login] = useMutation(LOGIN_MUTATION)
 
-  const onSubmit = event => {
-    event.preventDefault()
-    const email = event.target.elements.email.value
-    const password = event.target.elements.password.value
-
-    login({ variables: { email, password } })
+  if (currentUserEmail) {
+    navigate("/")
   }
 
   return (
-    <form onSubmit={onSubmit}>
-      {loginData?.errors.map((error, index) => (
-        <div key={index}>{error}</div>
-      ))}
-      <input placeholder="Email" name="email" disabled={loading} />
-      <input
-        placeholder="Password"
-        type="password"
-        name="password"
-        disabled={loading}
-      />
-      <button type="submit" disabled={loading}>
-        Go
-      </button>
-    </form>
+    <Formik
+      initialValues={{
+        email: "",
+        password: "",
+      }}
+      onSubmit={({ email, password }, { setSubmitting, setStatus }) => {
+        login({
+          variables: { email, password },
+        }).then(
+          ({
+            data: {
+              login: { success, email, errors },
+            },
+          }) => {
+            setSubmitting(false)
+            setStatus({ errors })
+            if (success) {
+              setCurrentUserEmail(email)
+              navigate("/")
+            }
+          }
+        )
+      }}
+    >
+      {({ status: { errors = [] } = {}, isSubmitting }) => (
+        <Form>
+          {errors.map((error, index) => (
+            <div key={index}>{error}</div>
+          ))}
+          <TextInput
+            label="Email Address"
+            name="email"
+            type="email"
+            placeholder="jane@example.com"
+            disabled={isSubmitting}
+          />
+          <br />
+          <TextInput
+            label="Password"
+            name="password"
+            type="password"
+            placeholder="letmein"
+            disabled={isSubmitting}
+          />
+          <button type="submit" disabled={isSubmitting}>
+            Go
+          </button>
+        </Form>
+      )}
+    </Formik>
   )
 }
 
