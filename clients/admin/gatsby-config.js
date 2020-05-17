@@ -9,9 +9,10 @@ require("dotenv").config({
 
 module.exports = {
   siteMetadata: {
-    title: `Gatsby Default Starter`,
-    description: `Kick off your next, great Gatsby project with this default starter. This barebones starter ships with the main Gatsby configuration files you might need.`,
-    author: `@gatsbyjs`,
+    title: "Gatsby Rails Demo",
+    description:
+      "Demonstrates one possible way to make a Gatsby site talk to a Rails GraphQL API",
+    author: "Joe",
   },
   pathPrefix: process.env.GATSBY_PATH_PREFIX,
   plugins: [
