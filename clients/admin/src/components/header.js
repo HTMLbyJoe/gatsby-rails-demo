@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { jsx } from "theme-ui"
+import { jsx, Heading } from "theme-ui"
 import Link from "./Link"
 import PropTypes from "prop-types"
 
@@ -17,7 +17,7 @@ const Header = ({ siteTitle }) => (
         padding: "1.45rem 1.0875rem",
       }}
     >
-      <h1 sx={{ margin: 0 }}>
+      <Heading as="h1" margin={0}>
         <Link
           to="/"
           sx={{
@@ -27,7 +27,7 @@ const Header = ({ siteTitle }) => (
         >
           {siteTitle}
         </Link>
-      </h1>
+      </Heading>
     </div>
   </header>
 )

@@ -16,12 +16,30 @@ export default {
       },
     },
   },
+  fonts: {
+    body:
+      "'-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', 'sans-serif'",
+    heading: "inherit",
+    monospace:
+      "'SFMono-Regular', 'Consolas', 'Roboto Mono', 'Droid Sans Mono', 'Liberation Mono', 'Menlo', 'Courier', 'monospace'",
+  },
   styles: {
-    a: { color: "primary" },
+    root: {
+      fontFamily: "body",
+      fontWeight: "body",
+    },
+    a: {
+      color: "primary",
+      fontFamily: "body",
+    },
   },
   buttons: {
     primary: {
+      fontFamily: "body",
       cursor: "pointer",
     },
+  },
+  forms: {
+    label: { fontFamily: "body" },
   },
 }
