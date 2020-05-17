@@ -1,5 +1,6 @@
 import React, { useContext } from "react"
 import { navigate } from "gatsby"
+import { Button } from "theme-ui"
 import gql from "graphql-tag"
 import { useMutation } from "@apollo/client"
 import { Formik, Form } from "formik"
@@ -70,9 +71,9 @@ const LoginForm = () => {
             placeholder="letmein"
             disabled={isSubmitting}
           />
-          <button type="submit" disabled={isSubmitting}>
+          <Button mt={2} type="submit" disabled={isSubmitting}>
             Go
-          </button>
+          </Button>
         </Form>
       )}
     </Formik>

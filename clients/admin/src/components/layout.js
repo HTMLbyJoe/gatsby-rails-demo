@@ -8,10 +8,12 @@
 import React, { useContext } from "react"
 import PropTypes from "prop-types"
 import { Location } from "@reach/router"
-import { Link, withPrefix, useStaticQuery, graphql } from "gatsby"
+import { withPrefix, useStaticQuery, graphql } from "gatsby"
+import { Button } from "theme-ui"
 import gql from "graphql-tag"
 import { useQuery, useMutation } from "@apollo/client"
 import AppContext from "../AppContext"
+import Link from "./Link"
 import Header from "./header"
 import "./layout.css"
 
@@ -72,9 +74,9 @@ const Layout = ({ location, children }) => {
           {currentUserEmail && (
             <>
               Signed in as <b>{currentUserEmail}</b>{" "}
-              <button onClick={logout} disabled={loading}>
+              <Button onClick={logout} disabled={loading}>
                 Log out
-              </button>
+              </Button>
             </>
           )}
           {!currentUserEmail && location.pathname !== withPrefix("/login/") && (
