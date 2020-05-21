@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# Executes GraphQL queries
 class GraphqlController < ApplicationController
   # If accessing from outside this domain, nullify the session
   # This allows for outside API access while preventing CSRF attacks,
@@ -5,31 +8,32 @@ class GraphqlController < ApplicationController
   # protect_from_forgery with: :null_session
 
   def execute
-    variables = ensure_hash(params[:variables])
-    query = params[:query]
-    operation_name = params[:operationName]
-    context = {
-      request: request,
-      current_user: current_user,
-    }
-    result = GatsbyRailsDemoSchema.execute(query, variables: variables, context: context, operation_name: operation_name)
-    render json: result
-  rescue => e
+    render json: GatsbyRailsDemoSchema.execute(
+      params[:query],
+      variables: ensure_hash(params[:variables]),
+      context: context,
+      operation_name: params[:operationName]
+    )
+  rescue StandardError => e
     raise e unless Rails.env.development?
+
     handle_error_in_development e
   end
 
   private
 
+  def context
+    {
+      request: request,
+      current_user: current_user
+    }
+  end
+
   # Handle form data, JSON body, or a blank value
   def ensure_hash(ambiguous_param)
     case ambiguous_param
     when String
-      if ambiguous_param.present?
-        ensure_hash(JSON.parse(ambiguous_param))
-      else
-        {}
-      end
+      ensure_hash_from_string(ambiguous_param)
     when Hash, ActionController::Parameters
       ambiguous_param
     when nil
@@ -39,10 +43,20 @@ class GraphqlController < ApplicationController
     end
   end
 
-  def handle_error_in_development(e)
-    logger.error e.message
-    logger.error e.backtrace.join("\n")
+  def ensure_hash_from_string(ambiguous_param)
+    if ambiguous_param.present?
+      ensure_hash(JSON.parse(ambiguous_param))
+    else
+      {}
+    end
+  end
 
-    render json: { error: { message: e.message, backtrace: e.backtrace }, data: {} }, status: 500
+  def handle_error_in_development(error)
+    logger.error error.message
+    logger.error error.backtrace.join("\n")
+
+    render json: {
+      error: { message: error.message, backtrace: error.backtrace }, data: {}
+    }, status: :internal_server_error
   end
 end

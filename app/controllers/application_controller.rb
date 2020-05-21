@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# Controller that all other controllers inherit from
 class ApplicationController < ActionController::API
   include Clearance::Controller
   include ActionController::Cookies
@@ -7,8 +10,7 @@ class ApplicationController < ActionController::API
   protect_from_forgery with: :exception
   after_action :set_csrf_cookie
 
-  def no_op
-  end
+  def no_op; end
 
   private
 
@@ -16,7 +18,7 @@ class ApplicationController < ActionController::API
     cookies['CSRF-TOKEN'] = {
       value: form_authenticity_token,
       domain: ENV['COOKIE_DOMAIN'],
-      same_site: :strict,
+      same_site: :strict
     }
   end
 end

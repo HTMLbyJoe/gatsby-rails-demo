@@ -1,4 +1,7 @@
+# frozen_string_literal: true
+
 module Mutations
+  # Mutation that all others inherit from
   class BaseMutation < GraphQL::Schema::Mutation
     argument_class Types::BaseArgument
     field_class Types::BaseField

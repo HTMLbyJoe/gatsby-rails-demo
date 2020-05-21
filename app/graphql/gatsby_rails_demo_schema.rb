@@ -1,3 +1,7 @@
+# frozen_string_literal: true
+
+# The GraphQL schema for this app, using GraphQL Ruby
+# GraphqlController uses this to execute the queries
 class GatsbyRailsDemoSchema < GraphQL::Schema
   mutation(Types::MutationType)
   query(Types::QueryType)

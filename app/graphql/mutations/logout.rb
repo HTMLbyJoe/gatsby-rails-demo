@@ -1,13 +1,18 @@
-class Mutations::Logout < Mutations::BaseMutation
-  require 'clearance/session'
+# frozen_string_literal: true
 
-  field :success, Boolean, null: false
+module Mutations
+  # Log out the user session using Clearance
+  class Logout < Mutations::BaseMutation
+    require 'clearance/session'
 
-  def resolve
-    context[:request].env[:clearance].sign_out
+    field :success, Boolean, null: false
 
-    {
-      success: true
-    }
+    def resolve
+      context[:request].env[:clearance].sign_out
+
+      {
+        success: true
+      }
+    end
   end
 end
